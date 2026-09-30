@@ -38,8 +38,11 @@ Peran utama Front Contoller sebagai satu"nya titik masuk utama bagi semua reques
 | home/index | Home | index | - | home/index.php |
 | home/info/mvc | Home | info | mvc | home/info.php |
 | info/routing | Home | info | routing | home/info.php |
+| home/info/sistem | Home | info | sistem | home/info.php
 Tambahkan satu baris untuk route hasil Tahap Modifikasi ATM yang dibuat berdasarkan objek atau konteks
 aplikasi DPW, kemudian jelaskan pemetaan route → Controller → method → parameter → View.
+(Alamat (route/URL) yang diakses oleh pengguna melalui browser adalah (home/info/sistem), Controller(Home) lalu Router akan menerima request tersebut dan memanggil class Home(Home.php) yang bertindak sebagai pengatur logika aplikasi, Method(info) didalam controller Home, metode bernama info()dieksekusi, lalu Parameter(sistem), objek "sistem" ditangkap sebagai parameter data yang menentukan topik informasi yang ingin ditampilkan, View(home/info.php), controller mengambil data sesuai parameter, lali memuat file tampilan home/info.php untuk menyajikan hasilnya kepada user dilayar browser.)
+
 ## 5. Base URL dan Helper
 Fungsi base_url(), untuk menghasilkan URL lengkap menuju file yang terdapat di folder
 site_url(), berfungsi untuk membentuk URL dan langsung beralih ke halaman yang dihubungkan.
@@ -61,13 +64,10 @@ Browser → index.php → Router → Controller → Model → basis data/data �
 Response.
 Kurang lebih alur eksekusi sama tetapi yang berbeda hanya pada bagian Model yang berada ditengah antara controller dan database, ketika controller membutuhkan data dari database misalnya, data pasien, controller akan meminta data pasien ke model.Lalu model melakukan query ke basis data, mengambil hasilnya lalu mengembalikan data tersebut ke contoller sebelum diteruskan ke view.
 ## 7. Hasil Pengujian dan Debugging
-Catat skenario pengujian valid dan tidak valid beserta hasilnya. Jika ditemukan kesalahan selama
-implementasi, dokumentasikan sekurang-kurangnya satu proses debugging yang memuat:
-Gejala → Penyebab → Perbaikan → Hasil Uji Ulang
-Jika seluruh implementasi langsung berjalan sesuai hasil yang diharapkan, jelaskan hasil pemeriksaan
-sintaks dan pengujian yang telah dilakukan.
+Jika seluruh implementasi langsung berjalan sesuai hasil yang diharapkan, jelaskan hasil pemeriksaan sintaks dan pengujian yang telah dilakukan.
 ### Gambar 1. Hasil Pengujian sintaks
 ![Hasil Pengujian - Halaman Utama](dokumentasi/HasilPengujian.jpg)
+semua file yang diuji menunjukan status valid tanpa adanya syntax error.
 ## 8. Bukti Tangkapan Layar
 Sisipkan gambar yang relevan dari folder dokumentasi/ dengan perintah:
 ### Gambar 1. Hasil Pengujian Halaman Utama
