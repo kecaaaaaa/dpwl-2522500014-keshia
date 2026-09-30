@@ -66,6 +66,8 @@ implementasi, dokumentasikan sekurang-kurangnya satu proses debugging yang memua
 Gejala → Penyebab → Perbaikan → Hasil Uji Ulang
 Jika seluruh implementasi langsung berjalan sesuai hasil yang diharapkan, jelaskan hasil pemeriksaan
 sintaks dan pengujian yang telah dilakukan.
+### Gambar 1. Hasil Pengujian sintaks
+![Hasil Pengujian - Halaman Utama](dokumentasi/HasilPengujian.jpg)
 ## 8. Bukti Tangkapan Layar
 Sisipkan gambar yang relevan dari folder dokumentasi/ dengan perintah:
 ### Gambar 1. Hasil Pengujian Halaman Utama
