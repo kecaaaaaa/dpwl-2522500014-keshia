@@ -38,7 +38,8 @@ Peran utama Front Contoller sebagai satu"nya titik masuk utama bagi semua reques
 | home/index | Home | index | - | home/index.php |
 | home/info/mvc | Home | info | mvc | home/info.php |
 | info/routing | Home | info | routing | home/info.php |
-| home/info/sistem | Home | info | sistem | home/info.php
+| home/info/sistem | Home | info | sistem | home/info.php |
+
 Tambahkan satu baris untuk route hasil Tahap Modifikasi ATM yang dibuat berdasarkan objek atau konteks
 aplikasi DPW, kemudian jelaskan pemetaan route → Controller → method → parameter → View.
 (Alamat (route/URL) yang diakses oleh pengguna melalui browser adalah (home/info/sistem), Controller(Home) lalu Router akan menerima request tersebut dan memanggil class Home(Home.php) yang bertindak sebagai pengatur logika aplikasi, Method(info) didalam controller Home, metode bernama info()dieksekusi, lalu Parameter(sistem), objek "sistem" ditangkap sebagai parameter data yang menentukan topik informasi yang ingin ditampilkan, View(home/info.php), controller mengambil data sesuai parameter, lali memuat file tampilan home/info.php untuk menyajikan hasilnya kepada user dilayar browser.)
