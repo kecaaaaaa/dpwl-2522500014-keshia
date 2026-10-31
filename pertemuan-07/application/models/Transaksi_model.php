@@ -111,4 +111,34 @@ $this->lepasKunci($namaKunci);
 throw $e;
 }
 }
+
+public function getJumlahMobilKeranjang(string $userPlg): int
+{
+$userPlg = trim($userPlg);
+if ($userPlg === '') {
+return 0;
+}
+$stmt = $this->db->prepare(
+"SELECT COUNT(*) AS jumlah
+FROM t_pilih p
+INNER JOIN t_sewa s ON s.kode_sewa = p.kode_sewa
+WHERE s.user_plg = ?
+AND s.status_sewa = 'keranjang'"
+);
+if (!$stmt) {
+throw new RuntimeException(
+'Penghitungan kendaraan dalam keranjang gagal disiapkan.'
+);
+}
+$stmt->bind_param('s', $userPlg);
+if (!$stmt->execute()) {
+$stmt->close();
+throw new RuntimeException(
+'Penghitungan kendaraan dalam keranjang gagal dijalankan.'
+);
+}
+$hasil = $stmt->get_result()->fetch_assoc();
+$stmt->close();
+return (int) ($hasil['jumlah'] ?? 0);
+}
 }
