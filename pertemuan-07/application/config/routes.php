@@ -28,5 +28,10 @@ $route['auth/register'] = 'Auth/register';
 $route['auth/login-penyewa'] = 'Auth/loginPenyewa';
 $route['auth/logout-penyewa'] = 'Auth/logoutPenyewa';
 $route['penyewa/profil'] = 'Penyewa_controller/profil';
-// Route P7 - Transaksi dan Keranjang
+// Route P7 - Transaksi, Keranjang, dan Checkout
 $route['transaksi/tambah'] = 'Transaksi_controller/tambah';
+$route['transaksi/keranjang'] = 'Transaksi_controller/keranjang';
+$route['transaksi/perbarui-periode'] = 'Transaksi_controller/perbaruiPeriode';
+$route['transaksi/hapus'] = 'Transaksi_controller/hapus';
+$route['transaksi/hapus/(:any)'] = 'Transaksi_controller/hapus/$1';
+$route['transaksi/checkout'] = 'Transaksi_controller/checkout';
