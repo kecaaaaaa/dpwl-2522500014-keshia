@@ -1,9 +1,9 @@
 <?php
 function base_url(string $uri = ''): string
 {
-global $config;
-$base = rtrim($config['base_url'], '/') . '/';
-return $uri === '' ? $base : $base . ltrim($uri, '/');
+    global $config;
+    $base = rtrim($config['base_url'], '/') . '/';
+    return $uri === '' ? $base : $base . ltrim($uri, '/');
 }
 // function site_url(string $uri = ''): string
 // {
@@ -16,10 +16,10 @@ return $uri === '' ? $base : $base . ltrim($uri, '/');
 // P6: menghilangkan penulisan index.php pada URL aplikasi, sehingga tidak membuat // pada URL aplikasi
 function site_url(string $uri = ''): string
 {
-global $config;
-$base = rtrim($config['base_url'], '/');
-$indexPage = trim($config['index_page'], '/');
-$path = $indexPage === '' ? '' : '/' . $indexPage;
-$url = $base . $path;
-return $uri === '' ? $url : $url . '/' . ltrim($uri, '/');
+    global $config;
+    $base = rtrim($config['base_url'], '/');
+    $indexPage = trim($config['index_page'], '/');
+    $path = $indexPage === '' ? '' : '/' . $indexPage;
+    $url = $base . $path;
+    return $uri === '' ? $url : $url . '/' . ltrim($uri, '/');
 }
