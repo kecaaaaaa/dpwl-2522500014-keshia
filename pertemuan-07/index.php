@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set('Asia/Jakarta');
 
 define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR);
 define('APPPATH', FCPATH . 'application' . DIRECTORY_SEPARATOR);
