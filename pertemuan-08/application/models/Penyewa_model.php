@@ -217,4 +217,58 @@ WHERE user_plg = ?";
         $stmt->close();
         return $success;
     }
+    // P8: seluruh penyewa untuk tabel admin (tanpa hash sandi)
+    public function getAll(): array
+    {
+        $sql = "SELECT user_plg, nik, nm_lngkp, no_hp, almt_lngkp, ft_ktp, ft_sim_a
+            FROM t_penyewa
+            ORDER BY nm_lngkp ASC";
+        $stmt = $this->db->prepare($sql);
+        if (!$stmt) {
+            throw new RuntimeException('Query daftar penyewa gagal disiapkan.');
+        }
+        $stmt->execute();
+        $rows = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        return $rows;
+    }
+
+    // P8: ubah data oleh admin. user_plg adalah kunci, tidak diubah.
+    public function updateByAdmin(
+        string $userPlg,
+        string $nik,
+        string $nama,
+        string $noHp,
+        string $alamat,
+        ?string $passwordHash
+    ): bool {
+        if ($passwordHash !== null) {
+            $stmt = $this->db->prepare(
+                "UPDATE t_penyewa
+         SET nik=?, nm_lngkp=?, no_hp=?, almt_lngkp=?, sandi=?
+         WHERE user_plg=?"
+            );
+            $stmt->bind_param('ssssss', $nik, $nama, $noHp, $alamat, $passwordHash, $userPlg);
+        } else {
+            $stmt = $this->db->prepare(
+                "UPDATE t_penyewa
+         SET nik=?, nm_lngkp=?, no_hp=?, almt_lngkp=?
+         WHERE user_plg=?"
+            );
+            $stmt->bind_param('sssss', $nik, $nama, $noHp, $alamat, $userPlg);
+        }
+        $success = $stmt->execute();
+        $stmt->close();
+        return $success;
+    }
+
+    // P8: hapus penyewa
+    public function delete(string $userPlg): bool
+    {
+        $stmt = $this->db->prepare("DELETE FROM t_penyewa WHERE user_plg = ?");
+        $stmt->bind_param('s', $userPlg);
+        $success = $stmt->execute();
+        $stmt->close();
+        return $success;
+    }
 }
