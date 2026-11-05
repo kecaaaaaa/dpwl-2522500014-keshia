@@ -4,3 +4,5 @@
 3. Tahap Tiga menambahkan controller untuk mengatur alur. Controller Manajemen Penyewa merupakan file baru di application/controllers/Mpenyewa_controller.php. Didalamnnya terdapat logika index,tambah,ubah,hapus.Berfungsi sebagai pemanggil model dan mengirim data ke view.
 4. Tahap keempat baru menambahkan view pada file baru di application/views/admin/mpenyewa_view.php. File ini yan g digunakan untuk menampilkan tampilan table dan form. Menerima data dari controller.
 5. Tahap kelima menambahkan 4 route baru pada config/routes.php. Ini untuk menghubungkan URL admin/mpenyewa ke method controller.Sebelum ada ini halaman manajemen penyewa tidak bisa dibuka.
+6. Terakhir menambahkan css untuk merubah tampilan halaman Manajemen penyewa.
+7. Lalu hasil pengujian semuanya berjalan ubah oleh admin bisa dilakukan, lalu hapus juga bisa dilakukan, dan tambah penyewa oleh admin juga bisa dilakukan. 
