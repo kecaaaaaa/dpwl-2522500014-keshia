@@ -1,1 +1,6 @@
 # pertemuan-08
+1. Pada tahap pertama menambahkan menu di bawah manajemen kendaraan yaitu manajemen penyewa, ditambahkan pada application/views/templates/sidebar.php. Code di letakan di paling bawah selelah manajemen kendaraan yang akan menghasilkan output tampilan Manajemen Penyewa pada navigas admin.
+2. Tahap Kedua menambahkan model, karena data yang ditampilkan harus bisa di ambil,diubah,dan dihapus dulu. Method yang ditambahkan ada 3 yaitu getAll(),updateByAdmin(), dan delete(). getAll untuk mengambil semua penyewa, updateByAdmin untuk mengubah data penyewa oleh admin, dan delete untuk menghapus penyewa oleh admin.
+3. Tahap Tiga menambahkan controller untuk mengatur alur. Controller Manajemen Penyewa merupakan file baru di application/controllers/Mpenyewa_controller.php. Didalamnnya terdapat logika index,tambah,ubah,hapus.Berfungsi sebagai pemanggil model dan mengirim data ke view.
+4. Tahap keempat baru menambahkan view pada file baru di application/views/admin/mpenyewa_view.php. File ini yan g digunakan untuk menampilkan tampilan table dan form. Menerima data dari controller.
+5. Tahap kelima menambahkan 4 route baru pada config/routes.php. Ini untuk menghubungkan URL admin/mpenyewa ke method controller.Sebelum ada ini halaman manajemen penyewa tidak bisa dibuka.
