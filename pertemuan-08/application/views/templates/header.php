@@ -77,6 +77,11 @@ bs/css/dataTables.bootstrap.min.css',
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600it
 alic">
+    <?php if (!empty($css_tambahan)): ?>
+        <!-- CSS khusus halaman (opsional, diisi oleh view) -->
+        <link rel="stylesheet"
+            href="<?= htmlspecialchars(base_url($css_tambahan), ENT_QUOTES, 'UTF-8') ?>">
+    <?php endif; ?>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">

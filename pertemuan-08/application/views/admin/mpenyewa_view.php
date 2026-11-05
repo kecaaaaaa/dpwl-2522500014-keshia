@@ -1,4 +1,7 @@
 <?php
+// CSS khusus halaman ini dimuat oleh templates/header.php
+$css_tambahan = 'assets/css/penyewa.css';
+
 require APPPATH . '/views/templates/header.php';
 require APPPATH . '/views/templates/sidebar.php';
 
@@ -17,9 +20,11 @@ $isEdit = $mode === 'ubah';
 $formAction = $isEdit
   ? site_url('admin/mpenyewa/ubah/' . rawurlencode((string) ($p['user_plg'] ?? '')))
   : site_url('admin/mpenyewa/tambah');
+
+$fotoUrl = fn($nama) => base_url('uploads/penyewa/' . rawurlencode((string) $nama));
 ?>
 
-<div class="content-wrapper">
+<div class="content-wrapper penyewa-page">
   <section class="content-header">
     <h1>Manajemen Penyewa <small>Kelola data penyewa</small></h1>
     <ol class="breadcrumb">
@@ -38,7 +43,7 @@ $formAction = $isEdit
       </div>
     <?php endif; ?>
 
-    <div class="box">
+    <div class="box box-penyewa">
       <div class="box-header">
         <h3 class="box-title">Data Penyewa</h3>
         <div class="box-tools">
@@ -59,16 +64,16 @@ $formAction = $isEdit
                 <th>Nama Lengkap</th>
                 <th>No. HP</th>
                 <th>Alamat</th>
-                <th>Foto KTP</th>
-                <th>Foto SIM A</th>
-                <th>Aksi</th>
+                <th class="no-sort">Foto KTP</th>
+                <th class="no-sort">Foto SIM A</th>
+                <th class="no-sort">Aksi</th>
               </tr>
             </thead>
             <tbody>
               <?php foreach ($penyewa as $no => $item): ?>
                 <tr>
                   <td><?= (int) $no + 1 ?></td>
-                  <td><?= $e($item['user_plg']) ?></td>
+                  <td><span class="label-username"><?= $e($item['user_plg']) ?></span></td>
                   <td><?= $e($item['nik']) ?></td>
                   <td><?= $e($item['nm_lngkp']) ?></td>
                   <td><?= $e($item['no_hp']) ?></td>
@@ -76,10 +81,9 @@ $formAction = $isEdit
                   <?php foreach (['ft_ktp' => 'Foto KTP', 'ft_sim_a' => 'Foto SIM A'] as $f => $label): ?>
                     <td>
                       <?php if (!empty($item[$f])): ?>
-                        <a href="<?= $e(base_url('uploads/penyewa/' . rawurlencode($item[$f]))) ?>" target="_blank">
-                          <img src="<?= $e(base_url('uploads/penyewa/' . rawurlencode($item[$f]))) ?>"
-                            alt="<?= $e($label) ?>"
-                            style="width: 80px; height: 55px; object-fit: cover;">
+                        <a href="<?= $e($fotoUrl($item[$f])) ?>" target="_blank" rel="noopener">
+                          <img class="foto-thumb" src="<?= $e($fotoUrl($item[$f])) ?>"
+                            alt="<?= $e($label) ?>">
                         </a>
                       <?php else: ?>
                         <span class="text-muted">Belum ada foto</span>
@@ -128,12 +132,12 @@ $formAction = $isEdit
     <?php endif; ?>
 
     <?php if ($isForm): ?>
-      <div class="box box-primary">
+      <div class="box box-primary box-form-penyewa">
         <div class="box-header with-border">
           <h3 class="box-title"><?= $isEdit ? 'Ubah Data Penyewa' : 'Tambah Penyewa' ?></h3>
         </div>
 
-        <form role="form" method="post" action="<?= $e($formAction) ?>">
+        <form role="form" method="post" enctype="multipart/form-data" action="<?= $e($formAction) ?>">
           <div class="box-body">
             <div class="form-group">
               <label for="user_plg">Username</label>
@@ -171,6 +175,24 @@ $formAction = $isEdit
               <textarea class="form-control" id="almt_lngkp" name="almt_lngkp" rows="3"
                 maxlength="300" required><?= $e($p['almt_lngkp'] ?? '') ?></textarea>
             </div>
+
+            <?php foreach (['ft_ktp' => 'Foto KTP', 'ft_sim_a' => 'Foto SIM A'] as $f => $label): ?>
+              <div class="form-group">
+                <label for="<?= $f ?>"><?= $label ?></label>
+                <?php if ($isEdit && !empty($p[$f])): ?>
+                  <div class="foto-saat-ini">
+                    <img class="foto-thumb" src="<?= $e($fotoUrl($p[$f])) ?>" alt="<?= $e($label) ?> saat ini">
+                    <small class="text-muted">Foto saat ini</small>
+                  </div>
+                <?php endif; ?>
+                <input type="file" id="<?= $f ?>" name="<?= $f ?>"
+                  accept="image/jpeg,image/png,image/webp">
+                <p class="help-block">
+                  JPEG, PNG, atau WEBP, maksimal 5 MB.
+                  <?= $isEdit ? 'Kosongkan jika tidak diganti.' : 'Boleh dikosongkan.' ?>
+                </p>
+              </div>
+            <?php endforeach; ?>
           </div>
 
           <div class="box-footer">

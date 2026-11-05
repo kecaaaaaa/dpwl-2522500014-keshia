@@ -1,0 +1,84 @@
+/* ==========================================================
+   Manajemen Penyewa - gaya khusus halaman (ringan dan sederhana)
+   Semua selector diawali .penyewa-page agar tidak mengubah
+   halaman lain (Manajemen Kendaraan, Manajemen Admin, dll).
+   ========================================================== */
+
+/* Aksen warna halaman: hijau toska */
+.penyewa-page {
+  --aksen: #16a085;
+  --aksen-muda: #e8f6f3;
+}
+
+/* Judul halaman */
+.penyewa-page .content-header > h1 {
+  color: var(--aksen);
+  font-weight: 600;
+}
+
+/* Kotak tabel dan kotak form: garis atas berwarna aksen */
+.penyewa-page .box-penyewa,
+.penyewa-page .box-form-penyewa {
+  border-top: 3px solid var(--aksen);
+  border-radius: 4px;
+}
+
+/* Kepala tabel */
+.penyewa-page .table > thead > tr > th {
+  background: var(--aksen-muda);
+  border-bottom: 2px solid var(--aksen);
+  color: #0e6655;
+}
+
+/* Baris tabel saat disorot kursor */
+.penyewa-page .table-striped > tbody > tr:hover {
+  background: var(--aksen-muda);
+}
+
+/* Username tampil sebagai lencana kecil */
+.penyewa-page .label-username {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--aksen);
+  color: #fff;
+  font-size: 12px;
+}
+
+/* Foto KTP / SIM A */
+.penyewa-page .foto-thumb {
+  width: 80px;
+  height: 55px;
+  object-fit: cover;
+  border: 1px solid #d2d6de;
+  border-radius: 4px;
+  transition: transform 0.15s;
+}
+.penyewa-page .foto-thumb:hover {
+  transform: scale(1.08);
+}
+
+/* Foto yang sedang tersimpan di form ubah */
+.penyewa-page .foto-saat-ini {
+  margin-bottom: 8px;
+}
+.penyewa-page .foto-saat-ini .foto-thumb {
+  width: 120px;
+  height: 80px;
+  margin-right: 8px;
+}
+
+/* Kolom input saat dipilih (fokus) */
+.penyewa-page .form-control:focus {
+  border-color: var(--aksen);
+  box-shadow: none;
+}
+
+/* Tombol Simpan mengikuti warna aksen */
+.penyewa-page .box-footer .btn-primary {
+  background: var(--aksen);
+  border-color: #138d75;
+}
+.penyewa-page .box-footer .btn-primary:hover {
+  background: #138d75;
+}
