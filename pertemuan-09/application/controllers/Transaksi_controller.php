@@ -287,9 +287,12 @@ keranjang.');
                     'Checkout belum berhasil. Periksa kembali keranjang Anda.'
                 );
             }
+            // P9: setelah checkout, penyewa diarahkan ke halaman pembayaran DP.
             $_SESSION['flash_penyewa_nav'] =
-                'Checkout berhasil. Transaksi diajukan dan menunggu persetujuan admin.';
-            header('Location: ' . site_url('katalog'));
+                'Checkout berhasil. Silakan unggah bukti pembayaran DP agar transaksi dapat diverifikasi admin.';
+            header('Location: ' . site_url(
+                'pembayaran/bayar?kode_sewa=' . rawurlencode($kodeSewa)
+            ));
             exit;
         } catch (Throwable $e) {
             error_log('Checkout transaksi gagal: ' . $e->getMessage());
