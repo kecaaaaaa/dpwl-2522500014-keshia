@@ -45,3 +45,7 @@ $route['pembayaran'] = 'Pembayaran_controller/index';
 $route['pembayaran/bayar'] = 'Pembayaran_controller/bayar';
 $route['pembayaran/simpan'] = 'Pembayaran_controller/simpan';
 $route['pembayaran/bukti'] = 'Pembayaran_controller/bukti';
+// Route P9 - Verifikasi admin
+$route['admin/verifikasi'] = 'Verifikasi_controller/index';
+$route['admin/verifikasi/detail'] = 'Verifikasi_controller/detail';
+$route['admin/verifikasi/proses'] = 'Verifikasi_controller/proses';
