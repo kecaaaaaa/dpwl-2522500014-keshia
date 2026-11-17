@@ -40,3 +40,8 @@ $route['admin/mpenyewa'] = 'Mpenyewa_controller/index';
 $route['admin/mpenyewa/tambah'] = 'Mpenyewa_controller/tambah';
 $route['admin/mpenyewa/ubah/(:any)'] = 'Mpenyewa_controller/ubah/$1';
 $route['admin/mpenyewa/hapus/(:any)'] = 'Mpenyewa_controller/hapus/$1';
+// Route P9 - Pembayaran DP penyewa
+$route['pembayaran'] = 'Pembayaran_controller/index';
+$route['pembayaran/bayar'] = 'Pembayaran_controller/bayar';
+$route['pembayaran/simpan'] = 'Pembayaran_controller/simpan';
+$route['pembayaran/bukti'] = 'Pembayaran_controller/bukti';
