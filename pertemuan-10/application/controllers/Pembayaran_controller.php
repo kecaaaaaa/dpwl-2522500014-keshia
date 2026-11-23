@@ -277,4 +277,174 @@ class Pembayaran_controller extends Controller
         }
         return ['success' => true, 'filename' => $nama, 'error' => null];
     }
+
+    /**
+     * P10: Menampilkan daftar transaksi yang masih memiliki kewajiban pelunasan.
+     */
+    public function pelunasanIndex(): void
+    {
+        require_admin_login();
+        $this->wajibMetode('GET');
+        try {
+            $daftarPelunasan = $this->pembayaranModel
+                ->getDaftarPelunasan();
+            $flash = $_SESSION['flash_pembayaran'] ?? null;
+            unset($_SESSION['flash_pembayaran']);
+            $this->view('admin/pelunasan', [
+                'username' => $_SESSION['admin_username'],
+                'daftarPelunasan' => $daftarPelunasan,
+                'flash' => $flash
+            ]);
+        } catch (Throwable $e) {
+            error_log(
+                'Daftar pelunasan gagal ditampilkan: ' . $e->getMessage()
+            );
+            http_response_code(500);
+            exit('Daftar transaksi pelunasan belum dapat ditampilkan. '
+                . 'Silakan coba kembali.');
+        }
+    }
+
+    /**
+     * P10: Menampilkan detail transaksi, riwayat pembayaran, dan sisa kewajiban.
+     */
+    public function pelunasanDetail(string $kodeSewa = ''): void
+    {
+        require_admin_login();
+        $this->wajibMetode('GET');
+        $kodeSewa = trim(str_replace('~', '/', $kodeSewa));
+        if ($kodeSewa === '') {
+            http_response_code(400);
+            exit('Kode transaksi sewa wajib tersedia.');
+        }
+        try {
+            $detailPelunasan = $this->pembayaranModel
+                ->getDetailPelunasan($kodeSewa);
+            if ($detailPelunasan === null) {
+                http_response_code(404);
+                exit('Transaksi sewa tidak ditemukan.');
+            }
+            $flash = $_SESSION['flash_pembayaran'] ?? null;
+            unset($_SESSION['flash_pembayaran']);
+            $this->view('admin/pelunasan_detail', [
+                'username' => $_SESSION['admin_username'],
+                'detailPelunasan' => $detailPelunasan,
+                'flash' => $flash
+            ]);
+        } catch (Throwable $e) {
+            error_log(
+                'Detail pelunasan gagal ditampilkan: ' . $e->getMessage()
+            );
+            http_response_code(500);
+            exit('Detail transaksi pelunasan belum dapat ditampilkan. '
+                . 'Silakan coba kembali.');
+        }
+    }
+
+    /**
+     * P10: Mencatat pelunasan yang diterima langsung oleh admin.
+     *
+     * Tunai: tidak memerlukan unggahan bukti.
+     * Transfer: admin mengunggah bukti yang diterima dari penyewa.
+     * Model menghitung nominal sisa kewajiban dan menyimpan pembayaran
+     * dengan status valid dalam satu transaksi database.
+     */
+    public function prosesPelunasan(string $kodeSewa = ''): void
+    {
+        require_admin_login();
+        $this->wajibMetode('POST');
+        $kodeSewa = trim(str_replace('~', '/', $kodeSewa));
+        $metodeBayar = trim((string) ($_POST['mtode_byr'] ?? ''));
+        if ($kodeSewa === '') {
+            http_response_code(400);
+            exit('Kode transaksi sewa wajib tersedia.');
+        }
+        if (!in_array($metodeBayar, ['tunai', 'transfer'], true)) {
+            $this->redirectDenganPesan(
+                'admin/pembayaran/pelunasan/' . str_replace('/', '~', $kodeSewa),
+                'error',
+                'Metode pembayaran harus tunai atau transfer.'
+            );
+        }
+        $namaFileBukti = null;
+        if ($metodeBayar === 'transfer') {
+            $hasilUpload = $this->simpanFileBukti('ft_byr');
+            if (!$hasilUpload['success']) {
+                $this->redirectDenganPesan(
+                    'admin/pembayaran/pelunasan/' . str_replace('/', '~', $kodeSewa),
+                    'error',
+                    $hasilUpload['error']
+                );
+            }
+            $namaFileBukti = (string) $hasilUpload['filename'];
+        }
+        try {
+            $kodeBayar = $this->pembayaranModel->simpanPelunasan(
+                $kodeSewa,
+                $metodeBayar,
+                $namaFileBukti
+            );
+            $this->redirectDenganPesan(
+                'admin/pembayaran/pelunasan/' . str_replace('/', '~', $kodeSewa),
+                'success',
+                'Pelunasan berhasil dicatat dengan kode pembayaran ' . $kodeBayar
+                    . '. Status pembayaran: valid; status transaksi: lunas.'
+            );
+        } catch (InvalidArgumentException $e) {
+            if ($namaFileBukti !== null) {
+                $this->hapusBuktiBaru($namaFileBukti);
+            }
+            $this->redirectDenganPesan(
+                'admin/pembayaran/pelunasan/' . str_replace('/', '~', $kodeSewa),
+                'error',
+                $e->getMessage()
+            );
+        } catch (Throwable $e) {
+            error_log(
+                'Proses pelunasan gagal: ' . $e->getMessage()
+            );
+            if ($namaFileBukti !== null) {
+                $this->hapusBuktiBaru($namaFileBukti);
+            }
+            $this->redirectDenganPesan(
+                'admin/pembayaran/pelunasan/' . str_replace('/', '~', $kodeSewa),
+                'error',
+                'Pelunasan belum berhasil dicatat. Pastikan transaksi masih memiliki '
+                    . 'sisa kewajiban dan belum pernah dilunasi.'
+            );
+        }
+    }
+    /**
+* P10: Menampilkan dokumen transaksi yang siap dicetak.
+* Data disusun Model dari t_sewa, t_penyewa, t_pilih, t_mobil,
+* dan t_bayar. Method ini hanya menyajikan data.
+*/
+public function dokumenTransaksi(string $kodeSewa = ''): void
+{
+require_admin_login();
+$this->wajibMetode('GET');
+$kodeSewa = trim(str_replace('~', '/', $kodeSewa));
+if ($kodeSewa === '') {
+http_response_code(400);
+exit('Kode transaksi sewa wajib tersedia.');
+}
+try {
+$detailPelunasan = $this->pembayaranModel
+->getDetailPelunasan($kodeSewa);
+if ($detailPelunasan === null) {
+http_response_code(404);
+exit('Data transaksi tidak ditemukan.');
+}
+$this->view('admin/dokumen_transaksi', [
+'detailPelunasan' => $detailPelunasan
+]);
+} catch (Throwable $e) {
+error_log(
+'Dokumen transaksi gagal ditampilkan: ' . $e->getMessage()
+);
+http_response_code(500);
+exit('Dokumen transaksi belum dapat ditampilkan. '
+. 'Silakan coba kembali.');
+}
+}
 }
