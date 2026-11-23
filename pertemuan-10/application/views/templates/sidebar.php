@@ -60,12 +60,16 @@ search"></i>
                     <i class="fa fa-users"></i> <span>Manajemen Penyewa</span>
                 </a>
             </li>
-             <li>
+            <li>
                 <a href="<?= htmlspecialchars(site_url('admin/verifikasi'), ENT_QUOTES, 'UTF-8') ?>">
                     <i class="fa fa-money"></i> <span>Verifikasi Pembayaran</span>
                 </a>
             </li>
-
+            <li>
+                <a href="<?= htmlspecialchars(site_url('admin/pembayaran/pelunasan'), ENT_QUOTES, 'UTF-8') ?>">
+                    <i class="fa fa-credit-card"></i> <span>Pelunasan Transaksi</span>
+                </a>
+            </li>
         </ul>
         <!-- /.sidebar-menu -->
     </section>
