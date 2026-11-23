@@ -1,5 +1,5 @@
 <?php
-$adminlte_url = base_url('../template/AdminLTE-2.4.18/AdminLTE-2.4.18/');
+$adminlte_url = base_url('../template/AdminLTE-2.4.18/');
 ?>
 <!DOCTYPE html>
 <html>
