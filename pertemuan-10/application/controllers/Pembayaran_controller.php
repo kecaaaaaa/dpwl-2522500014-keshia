@@ -286,10 +286,10 @@ class Pembayaran_controller extends Controller
         require_admin_login();
         $this->wajibMetode('GET');
         try {
-            $daftarPelunasan = $this->pembayaranModel
+            $daftarPelunasan = $this->model
                 ->getDaftarPelunasan();
-            $flash = $_SESSION['flash_pembayaran'] ?? null;
-            unset($_SESSION['flash_pembayaran']);
+            $flash = $_SESSION['flash_transaksi'] ?? null;
+            unset($_SESSION['flash_transaksi']);
             $this->view('admin/pelunasan', [
                 'username' => $_SESSION['admin_username'],
                 'daftarPelunasan' => $daftarPelunasan,
@@ -318,14 +318,14 @@ class Pembayaran_controller extends Controller
             exit('Kode transaksi sewa wajib tersedia.');
         }
         try {
-            $detailPelunasan = $this->pembayaranModel
+            $detailPelunasan = $this->model
                 ->getDetailPelunasan($kodeSewa);
             if ($detailPelunasan === null) {
                 http_response_code(404);
                 exit('Transaksi sewa tidak ditemukan.');
             }
-            $flash = $_SESSION['flash_pembayaran'] ?? null;
-            unset($_SESSION['flash_pembayaran']);
+            $flash = $_SESSION['flash_transaksi'] ?? null;
+            unset($_SESSION['flash_transaksi']);
             $this->view('admin/pelunasan_detail', [
                 'username' => $_SESSION['admin_username'],
                 'detailPelunasan' => $detailPelunasan,
@@ -368,7 +368,7 @@ class Pembayaran_controller extends Controller
         }
         $namaFileBukti = null;
         if ($metodeBayar === 'transfer') {
-            $hasilUpload = $this->simpanFileBukti('ft_byr');
+            $hasilUpload = $this->unggahBukti('ft_byr');
             if (!$hasilUpload['success']) {
                 $this->redirectDenganPesan(
                     'admin/pembayaran/pelunasan/' . str_replace('/', '~', $kodeSewa),
@@ -379,7 +379,7 @@ class Pembayaran_controller extends Controller
             $namaFileBukti = (string) $hasilUpload['filename'];
         }
         try {
-            $kodeBayar = $this->pembayaranModel->simpanPelunasan(
+            $kodeBayar = $this->model->simpanPelunasan(
                 $kodeSewa,
                 $metodeBayar,
                 $namaFileBukti
@@ -392,7 +392,7 @@ class Pembayaran_controller extends Controller
             );
         } catch (InvalidArgumentException $e) {
             if ($namaFileBukti !== null) {
-                $this->hapusBuktiBaru($namaFileBukti);
+                $this->hapusBerkas($namaFileBukti);
             }
             $this->redirectDenganPesan(
                 'admin/pembayaran/pelunasan/' . str_replace('/', '~', $kodeSewa),
@@ -404,7 +404,7 @@ class Pembayaran_controller extends Controller
                 'Proses pelunasan gagal: ' . $e->getMessage()
             );
             if ($namaFileBukti !== null) {
-                $this->hapusBuktiBaru($namaFileBukti);
+                $this->hapusBerkas($namaFileBukti);
             }
             $this->redirectDenganPesan(
                 'admin/pembayaran/pelunasan/' . str_replace('/', '~', $kodeSewa),
@@ -429,7 +429,7 @@ http_response_code(400);
 exit('Kode transaksi sewa wajib tersedia.');
 }
 try {
-$detailPelunasan = $this->pembayaranModel
+$detailPelunasan = $this->model
 ->getDetailPelunasan($kodeSewa);
 if ($detailPelunasan === null) {
 http_response_code(404);
